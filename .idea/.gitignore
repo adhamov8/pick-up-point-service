@@ -25,3 +25,5 @@ order.json
 return.json
 
 config/config.yaml
+pgdata/
+kafka_data/
