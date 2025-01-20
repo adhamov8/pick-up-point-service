@@ -1,0 +1,15 @@
+client:
+  grpc_address: "localhost:50051"
+
+server:
+  grpc_port: ":50051"
+  http_port: ":8080"
+  grpc_address: "localhost:50051"
+
+database:
+  dsn: postgres://postgres:postgres@localhost:5433/postgres?sslmode=disable
+
+kafka:
+  brokers:
+    - "localhost:9092"
+  topic: "pvz.events-log"

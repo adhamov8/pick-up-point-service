@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package order_service.v1;
+
+option go_package = "gitlab.ozon.dev/ashadkhamov/homework/pkg/order_service/v1;orderservicev1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service OrderService {
+  rpc AddOrder (AddOrderRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/orders"
+      body: "*"
+    };
+  }
+
+  rpc RemoveOrder (RemoveOrderRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/orders/{order_id}"
+    };
+  }
+
+  rpc DeliverOrders (DeliverOrdersRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/orders/deliver"
+      body: "*"
+    };
+  }
+
+  rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse) {
+    option (google.api.http) = {
+      get: "/v1/orders"
+    };
+  }
+
+  rpc AcceptReturn (AcceptReturnRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/orders/return"
+      body: "*"
+    };
+  }
+
+  rpc GetReturns (GetReturnsRequest) returns (GetReturnsResponse) {
+    option (google.api.http) = {
+      get: "/v1/orders/returns"
+    };
+  }
+}
+
+message AddOrderRequest {
+  string order_id = 1;
+  string recipient_id = 2;
+  string expiry_date = 3;
+  float weight = 4;
+  string packaging_type = 5;
+}
+
+message RemoveOrderRequest {
+  string order_id = 1;
+}
+
+message DeliverOrdersRequest {
+  string recipient_id = 1;
+  repeated string order_ids = 2;
+}
+
+message GetOrdersRequest {
+  string recipient_id = 1;
+  int32 last_n = 2;
+}
+
+message GetOrdersResponse {
+  repeated Order orders = 1;
+}
+
+message Order {
+  string order_id = 1;
+  string status = 2;
+  string delivery_date = 3;
+}
+
+message AcceptReturnRequest {
+  string recipient_id = 1;
+  string order_id = 2;
+}
+
+message GetReturnsRequest {
+  int32 page = 1;
+}
+
+message GetReturnsResponse {
+  repeated Return returns = 1;
+}
+
+message Return {
+  string order_id = 1;
+  string return_date = 2;
+}
